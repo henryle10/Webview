@@ -1,13 +1,15 @@
 workflows:
   ios-workflow:
     name: iOS Workflow
-    max_build_duration: 120
-    integrations:
-      app_store_connect: codemagic
     environment:
+      groups:
+        - admin
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: io.codemagic.howe
+        bundle_identifier: Howe Rentals
+      certificates:
+        - certificate: Howe_Certificate
+          environment_variable: THIS_CERTIFICATE_PATH_ON_DISK
       vars:
         APP_ID: 1555555551
       flutter: stable
@@ -38,24 +40,3 @@ workflows:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
       - flutter_drive.log
-    publishing:
-      email:
-        recipients:
-          - user_1@example.com
-          - user_2@example.com
-        notify:
-          success: true
-          failure: false
-      app_store_connect:
-        auth: integration
-
-        # Configuration related to TestFlight (optional)
-        # Note: This action is performed during post-processing.
-        submit_to_testflight: true
-        beta_groups: # Specify the names of beta tester groups that will get access to the build once it has passed beta review.
-          - group name 1
-          - group name 2
-
-        # Configuration related to App Store (optional)
-        # Note: This action is performed during post-processing.
-        submit_to_app_store: false
